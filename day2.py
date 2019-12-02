@@ -50,7 +50,7 @@ def find_noun_and_verb(memory, expected_output):
 
 
 with open('./day2.data', 'r') as data:
-    data = [int(i) for i in data.read().split(',')]
+    data = map(int, data.read().split(','))
     noun, verb = find_noun_and_verb(data, 19690720)
 
     output = 100 * noun + verb
