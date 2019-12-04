@@ -77,20 +77,22 @@ def wire_dist(polyline, point):
     return total_dist
 
 
-with open('day3.data', 'r') as data:
-    data = [line.split(',') for line in data.read().split()]
+data = open('day3.data').read().splitlines()
+data = [line.split(',') for line in data]
 
-    polylines = map(compute_polyline_from_wire, data)
-    line_couples = product(*polylines)
+polylines = map(compute_polyline_from_wire, data)
+line_couples = product(*polylines)
 
-    intersections = map(lambda x: compute_intersection(*x), line_couples)
-    intersections = filter(lambda x: x, intersections)
+intersections = map(lambda x: compute_intersection(*x), line_couples)
+intersections = filter(lambda x: x, intersections)
 
-    part1 = map(manhattan, intersections)
-    assert min(part1) == 23
+part1 = map(manhattan, intersections)
+assert min(part1) == 23
 
-    def wires_dist(x):
-        return wire_dist(polylines[0], x) + wire_dist(polylines[1], x)
 
-    part2 = map(wires_dist, intersections)
-    assert min(part2) == 8684
+def wires_dist(x):
+    return wire_dist(polylines[0], x) + wire_dist(polylines[1], x)
+
+
+part2 = map(wires_dist, intersections)
+assert min(part2) == 8684

@@ -19,8 +19,8 @@ def get_fuel_from_modules(module_list):
     return int(sum(map(get_fuel_from_mass, module_list)))
 
 
-with open("./day1.data", "r") as data:
-    data = map(int, data.read().split())
+data = open('./day1.data').read().split()
+data = map(int, data)
 
-    output = get_fuel_from_modules(data)
-    assert(output == 4816402)
+output = get_fuel_from_modules(data)
+assert(output == 4816402)

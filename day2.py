@@ -49,9 +49,9 @@ def find_noun_and_verb(memory, expected_output):
     raise Error('No solution !')
 
 
-with open('./day2.data', 'r') as data:
-    data = map(int, data.read().split(','))
-    noun, verb = find_noun_and_verb(data, 19690720)
+data = open('day2.data').read().split(',')
+data = map(int, data)
+noun, verb = find_noun_and_verb(data, 19690720)
 
-    output = 100 * noun + verb
-    assert(output == 6421)
+output = 100 * noun + verb
+assert(output == 6421)
