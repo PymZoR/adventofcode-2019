@@ -5,7 +5,7 @@ DY = dict(zip('LRUD', [0, 0, 1, -1]))
 
 
 def do_overlap(a, b):
-    return (a[1], b[1]) >= max(a[0], b[0])
+    return max(0, min(a[1], b[1]) - max(a[0], b[0])) >= 0
 
 
 def compute_intersection(segment1, segment2):
