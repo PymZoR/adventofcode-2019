@@ -1,3 +1,6 @@
+from collections import Counter
+
+
 def is_valid(password):
     password = list(map(int, str(password)))
     double_digit = False
@@ -14,16 +17,13 @@ def is_valid(password):
 
 def is_valid2(password):
     password = list(map(int, str(password)))
-    digits = dict((i, 0) for i in set(password))
+    digits_count = Counter(password)
 
     for i, j in zip(password[:-1], password[1:]):
         if j < i:
             return False
 
-        if i == j:
-            digits[i] += 1
-
-    return (1 in digits.values())
+    return (2 in digits_count.values())
 
 
 input_range = range(124075, 580769)
