@@ -20,7 +20,7 @@ for layer in layers[1:]:
             continue
         image[i] = pixel
 
-image = (''.join(image)).replace('0', '')
+image = (''.join(image)).replace('0', ' ').replace('1', '█')
 for row in range(height):
     print(image[row * width : (row+1) * width])
 # KYHFE
