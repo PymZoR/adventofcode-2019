@@ -29,34 +29,27 @@ def execute_instruction(memory, pc):
         value = params.pop(0)
         return value if mode else memory[value]
 
-    def get_output():
-        return params.pop(0)
+    def store(val):
+        memory[params.pop(0)] = val
 
     if opcode == 99:
         return -1
 
     if opcode == 1:
         input1, input2 = get_input(), get_input()
-        output = get_output()
-        memory[output] = input1 + input2
-        return pc+4
+        store(input1 + input2)
 
     if opcode == 2:
         input1, input2 = get_input(), get_input()
-        output = get_output()
-        memory[output] = input1 * input2
-        return pc+4
+        store(input1 * input2)
 
     if opcode == 3:
         input1 = get_user_input()
-        output = get_output()
-        memory[output] = input1
-        return pc+2
+        store(input1)
 
     if opcode == 4:
         input1 = get_input()
         print(str(input1))
-        return pc + 2
 
     if opcode == 5:
         input1, input2 = get_input(), get_input()
@@ -64,29 +57,21 @@ def execute_instruction(memory, pc):
         if input1:
             return input2
 
-        return pc + 3
-
     if opcode == 6:
         input1, input2 = get_input(), get_input()
 
         if not input1:
             return input2
 
-        return pc + 3
-
     if opcode == 7:
         input1, input2 = get_input(), get_input()
-        output = get_output()
-        memory[output] = 1 if input1 < input2 else 0
-
-        return pc + 4
+        store(1 if input1 < input2 else 0)
 
     if opcode == 8:
         input1, input2 = get_input(), get_input()
-        output = get_output()
-        memory[output] = 1 if input1 == input2 else 0
+        store(1 if input1 == input2 else 0)
 
-        return pc + 4
+    return pc + 1 + params_number[opcode]
 
 
 def execute_program(memory):
