@@ -1,59 +1,65 @@
 from itertools import product
 
+params_number = dict(zip(
+    [1, 2, 3, 4, 5, 6, 7, 8, 99],
+    [3, 3, 1, 1, 2, 2, 3, 3, 0])
+)
+
 
 def zero_pad(instruction, length=5):
     zeroes = ''.join(['0' for _ in range(5-len(instruction))])
     return zeroes + instruction
 
 
-def execute_instruction(memory, pc):
-    def get_value(mode, value):
-        return value if mode else memory[value]
+def get_user_input():
+    return int(raw_input('>> '))
 
+
+def execute_instruction(memory, pc):
     instruction = str(memory[pc])
     instruction = zero_pad(instruction)
     opcode = int(instruction[-2:])
     modes = [int(mode) for mode in reversed(instruction[:3])]
+    params = [memory[pc+i] for i in range(1, params_number[opcode]+1)]
 
     assert opcode in [1, 2, 3, 4, 5, 6, 7, 8,  99]
+
+    def get_input():
+        mode = modes.pop(0)
+        value = params.pop(0)
+        return value if mode else memory[value]
+
+    def get_output():
+        return params.pop(0)
 
     if opcode == 99:
         return -1
 
     if opcode == 1:
-        args = [memory[pc+i] for i in range(1, 3+1)]
-        input1 = get_value(modes[0], args[0])
-        input2 = get_value(modes[1], args[1])
-        output = args[2]
+        input1, input2 = get_input(), get_input()
+        output = get_output()
         memory[output] = input1 + input2
         return pc+4
 
     if opcode == 2:
-        args = [memory[pc+i] for i in range(1, 3+1)]
-        input1 = get_value(modes[0], args[0])
-        input2 = get_value(modes[1], args[1])
-        output = args[2]
+        input1, input2 = get_input(), get_input()
+        output = get_output()
         memory[output] = input1 * input2
         return pc+4
 
     if opcode == 3:
-        args = [memory[pc+i] for i in range(1, 1+1)]
-        user_input = raw_input('>> ')
-        input1 = int(user_input)
-        input2 = args[0]
-        memory[input2] = input1
+        input1 = get_user_input()
+        output = get_output()
+        memory[output] = input1
         return pc+2
 
     if opcode == 4:
-        args = [memory[pc+i] for i in range(1, 1+1)]
-        input1 = get_value(modes[0], args[0])
+        input1 = get_input()
         print(str(input1))
         return pc + 2
 
     if opcode == 5:
-        args = [memory[pc+i] for i in range(1, 2+1)]
-        input1 = get_value(modes[0], args[0])
-        input2 = get_value(modes[1], args[1])
+        input1, input2 = get_input(), get_input()
 
         if input1:
             return input2
@@ -61,9 +67,7 @@ def execute_instruction(memory, pc):
         return pc + 3
 
     if opcode == 6:
-        args = [memory[pc+i] for i in range(1, 2+1)]
-        input1 = get_value(modes[0], args[0])
-        input2 = get_value(modes[1], args[1])
+        input1, input2 = get_input(), get_input()
 
         if not input1:
             return input2
@@ -71,20 +75,16 @@ def execute_instruction(memory, pc):
         return pc + 3
 
     if opcode == 7:
-        args = [memory[pc+i] for i in range(1, 3+1)]
-        input1 = get_value(modes[0], args[0])
-        input2 = get_value(modes[1], args[1])
-        input3 = args[2]
-        memory[input3] = 1 if input1 < input2 else 0
+        input1, input2 = get_input(), get_input()
+        output = get_output()
+        memory[output] = 1 if input1 < input2 else 0
 
         return pc + 4
 
     if opcode == 8:
-        args = [memory[pc+i] for i in range(1, 3+1)]
-        input1 = get_value(modes[0], args[0])
-        input2 = get_value(modes[1], args[1])
-        input3 = args[2]
-        memory[input3] = 1 if input1 == input2 else 0
+        input1, input2 = get_input(), get_input()
+        output = get_output()
+        memory[output] = 1 if input1 == input2 else 0
 
         return pc + 4
 
@@ -101,3 +101,11 @@ def execute_program(memory):
 data = open('day5.data').read().split(',')
 data = list(map(int, data))
 execute_program(data)
+
+# part 1
+# << 1
+# >> 7286649
+
+# part 2
+# << 5
+# >> 15724522
