@@ -159,7 +159,7 @@ def print_screen(instructions):
 
     print("score: " + str(score))
 
-    return screen, paddle_pos, ball_pos
+    return screen, paddle_pos, ball_pos, score
 
 
 # Read program
@@ -170,21 +170,19 @@ machine = IntCodeMachine(data)
 ret = machine.run()
 
 instructions = list(machine.outputs)
-screen, _, _ = print_screen(instructions)
+screen, _, _, score = print_screen(instructions)
 part1 = len(filter(lambda tile: tile == 2, screen.values()))
 assert(part1 == 329)
 
 
 # part 2
-print(data[0])
 data[0] = 2
-print(data[0])
 machine.reset(data)
 
 ret_code = -1
 while ret_code != RET_CODE['HALT']:
     ret_code = machine.run()
-    screen, paddle_pos, ball_pos = print_screen(machine.outputs)
+    screen, paddle_pos, ball_pos, score = print_screen(machine.outputs)
 
     paddle_pos_x, paddle_pos_y = paddle_pos
     ball_pos_x, ball_pos_y = ball_pos
@@ -195,3 +193,5 @@ while ret_code != RET_CODE['HALT']:
         machine.inputs.append(-1)
     else:
         machine.inputs.append(0)
+
+assert(score == 15973)
